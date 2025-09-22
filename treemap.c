@@ -45,7 +45,7 @@ TreeMap * createTreeMap(int (*lower_than) (void* key1, void* key2)) {
     new->root = NULL;
     new->current = NULL;
     new->lower_than = lower_than;
-    return NULL;
+    return new;
 }
 
 
@@ -199,7 +199,7 @@ Pair * nextTreeMap(TreeMap * tree) {
         cur = p;
         p = p->parent;
     }
-    
+
     tree->current = p;
     return (p != NULL) ? p->pair : NULL;
 }
