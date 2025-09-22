@@ -91,13 +91,31 @@ void insertTreeMap(TreeMap * tree, void* key, void * value) {
 
 
 TreeNode * minimum(TreeNode * x){
-
-    return NULL;
+    if (x == NULL) return NULL;
+    while (x->left != NULL) x = x->left;
+    return x;
 }
 
 
 void removeNode(TreeMap * tree, TreeNode* node) {
+    if (tree == NULL || node == NULL) return;
+    if (node->left == NULL || node->right == NULL) {
+        TreeNode *child = (node->left != NULL) ? node->left : node->right;
+        TreeNode *parent = node->parent;
+        replaceNodeInParent(tree, node, child);
 
+        if (node->pair) free(node->pair);
+        free(node);
+
+        tree->current = (child != NULL) ? child : parent;
+        return;
+    }
+    TreeNode *succ = minimum(node->right);
+
+    Pair *tmp = node->pair;
+    node->pair = succ->pair;
+    succ->pair = tmp;
+    removeNode(tree, succ);
 }
 
 void eraseTreeMap(TreeMap * tree, void* key){
